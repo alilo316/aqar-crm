@@ -1,0 +1,22 @@
+{
+  "name": "عقاري CRM دبي",
+  "short_name": "عقاري CRM",
+  "description": "نظام إدارة العملاء العقاري - دبي",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D1117",
+  "theme_color": "#C9A84C",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/googlesamples/web-fundamentals/gh-pages/fundamentals/media/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/googlesamples/web-fundamentals/gh-pages/fundamentals/media/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

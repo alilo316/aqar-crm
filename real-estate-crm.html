@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>عقاري CRM - دبي</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#C9A84C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="عقاري CRM">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{--gold:#C9A84C;--dark:#0D1117;--dark2:#161B27;--dark3:#1E2738;--dark4:#263045;--text:#E8EAF0;--muted:#8B95A8;--green:#22C55E;--red:#EF4444;--blue:#3B82F6;--orange:#F97316;--purple:#A855F7;--border:rgba(201,168,76,0.18);}
+body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min-height:100vh;overflow-x:hidden;}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--dark2);border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px;cursor:pointer;border:none;background:none;color:var(--muted);font-family:'Cairo',sans-serif;font-size:10px;gap:3px;transition:color 0.2s;}
+.nav-btn .ico{font-size:22px;}
+.nav-btn.active{color:var(--gold);}
+.top-bar{position:sticky;top:0;z-index:50;background:var(--dark2);border-bottom:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;}
+.top-bar h1{font-size:18px;font-weight:900;color:var(--gold);}
+.top-bar span{font-size:11px;color:var(--muted);}
+.add-btn{background:linear-gradient(135deg,var(--gold),#9A7A30);color:#0D1117;border:none;border-radius:10px;padding:8px 14px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;}
+.page{display:none;padding:16px;padding-bottom:90px;}
+.page.active{display:block;}
+.stats-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.stat-box{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:16px;}
+.stat-box .lbl{font-size:11px;color:var(--muted);margin-bottom:4px;}
+.stat-box .val{font-size:28px;font-weight:900;line-height:1;}
+.stat-box .chg{font-size:11px;color:var(--green);margin-top:4px;}
+.gold-val{color:var(--gold);}
+.green-val{color:var(--green);}
+.blue-val{color:var(--blue);}
+.purple-val{color:var(--purple);}
+.sec{background:var(--dark2);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+.sec-head{padding:14px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:700;}
+.sec-body{padding:14px 16px;}
+.sec-btn{background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;color:var(--muted);font-family:'Cairo',sans-serif;font-size:11px;cursor:pointer;}
+/* LEAD ROW */
+.lead-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.lead-row:last-child{border-bottom:none;}
+.av{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#9A7A30,#263045);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.lead-info{flex:1;min-width:0;}
+.lead-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lead-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+.lead-right{text-align:left;flex-shrink:0;}
+.lead-price{font-size:13px;font-weight:700;color:var(--gold);}
+/* BADGE */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;margin-top:4px;}
+.b-blue{background:rgba(59,130,246,0.15);color:var(--blue);}
+.b-gold{background:rgba(201,168,76,0.15);color:var(--gold);}
+.b-green{background:rgba(34,197,94,0.15);color:var(--green);}
+.b-red{background:rgba(239,68,68,0.15);color:var(--red);}
+.b-orange{background:rgba(249,115,22,0.15);color:var(--orange);}
+.b-purple{background:rgba(168,85,247,0.15);color:var(--purple);}
+/* ACTION BUTTONS */
+.lead-actions{display:flex;gap:6px;margin-top:6px;}
+.act-btn{border:1px solid var(--border);background:var(--dark3);border-radius:7px;padding:4px 8px;font-size:11px;cursor:pointer;color:var(--muted);font-family:'Cairo',sans-serif;transition:all 0.2s;}
+.act-btn:hover{border-color:var(--gold);color:var(--gold);}
+.act-btn.del{border-color:rgba(239,68,68,0.3);color:var(--red);}
+/* PIPELINE */
+.pipeline-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;-webkit-overflow-scrolling:touch;}
+.pipeline-scroll::-webkit-scrollbar{display:none;}
+.pipe-col{background:var(--dark2);border:1px solid var(--border);border-radius:12px;min-width:170px;overflow:hidden;flex-shrink:0;}
+.pipe-head{padding:10px 12px;font-size:12px;font-weight:700;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pipe-body{padding:8px;min-height:120px;}
+.pipe-card{background:var(--dark3);border-radius:8px;padding:10px;margin-bottom:6px;border:1px solid rgba(255,255,255,0.04);}
+.pipe-card .p-name{font-size:12px;font-weight:700;margin-bottom:4px;}
+.pipe-card .p-type{font-size:10px;color:var(--muted);}
+.pipe-card .p-price{font-size:11px;color:var(--gold);font-weight:700;margin-top:5px;}
+.pipe-card-actions{display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;}
+.pipe-btn{border:1px solid var(--border);background:var(--dark4);border-radius:5px;padding:3px 6px;font-size:10px;cursor:pointer;color:var(--muted);font-family:'Cairo',sans-serif;}
+.pipe-btn:active{border-color:var(--gold);color:var(--gold);}
+.pipe-btn.del-btn{border-color:rgba(239,68,68,0.3);color:var(--red);}
+.pdot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-left:5px;}
+/* PROPERTY */
+.prop-card{background:var(--dark3);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:12px;display:flex;gap:12px;padding:12px;align-items:center;}
+.prop-emoji{width:56px;height:56px;background:var(--dark4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}
+.prop-info{flex:1;min-width:0;}
+.prop-name{font-size:14px;font-weight:700;}
+.prop-loc{font-size:11px;color:var(--muted);margin-top:2px;}
+.prop-price{font-size:15px;font-weight:900;color:var(--gold);margin-top:6px;}
+.prop-details{display:flex;gap:8px;margin-top:4px;flex-wrap:wrap;}
+.prop-det{font-size:10px;color:var(--muted);}
+/* APPT */
+.appt{display:flex;align-items:center;gap:10px;padding:12px;background:var(--dark3);border-radius:10px;margin-bottom:8px;border-right:3px solid;}
+.appt.call{border-color:var(--blue);}
+.appt.visit{border-color:var(--green);}
+.appt.meeting{border-color:var(--gold);}
+.appt-time{font-size:12px;color:var(--muted);width:46px;flex-shrink:0;font-weight:700;}
+.appt-title{font-size:13px;font-weight:700;}
+.appt-sub{font-size:11px;color:var(--muted);}
+/* FUNNEL */
+.funnel-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.funnel-lbl{font-size:11px;color:var(--muted);width:70px;flex-shrink:0;}
+.funnel-wrap{flex:1;height:24px;background:var(--dark3);border-radius:5px;overflow:hidden;}
+.funnel-fill{height:100%;border-radius:5px;display:flex;align-items:center;padding-right:8px;font-size:11px;font-weight:700;color:var(--dark);justify-content:flex-end;}
+.funnel-num{font-size:11px;font-weight:700;width:28px;text-align:left;}
+/* BARS */
+.bars{display:flex;align-items:flex-end;gap:6px;height:120px;margin-top:8px;}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.bar{width:100%;border-radius:5px 5px 0 0;background:linear-gradient(to top,#9A7A30,var(--gold));min-height:4px;}
+.bar.hi{background:linear-gradient(to top,#9A7A30,#E8C97A);}
+.bar-lbl{font-size:9px;color:var(--muted);}
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;cursor:pointer;border:1px solid var(--border);background:var(--dark2);}
+.tab.active{background:linear-gradient(135deg,var(--gold),#9A7A30);color:var(--dark);border-color:transparent;}
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:200;display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px);}
+.modal-bg.open{display:flex;}
+.modal{background:var(--dark2);border:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom);animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--dark2);z-index:1;}
+.modal-title{font-size:16px;font-weight:800;}
+.modal-close{width:30px;height:30px;border-radius:8px;border:1px solid var(--border);background:var(--dark3);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);}
+.modal-body{padding:20px;}
+.modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;}
+.form-group{margin-bottom:14px;}
+.form-label{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px;display:block;}
+.form-input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;outline:none;}
+.form-input:focus{border-color:var(--gold);}
+.form-select{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:11px 14px;color:var(--text);font-family:'Cairo',sans-serif;font-size:14px;outline:none;}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.btn-full{flex:1;padding:12px;border-radius:10px;border:none;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-gold-full{background:linear-gradient(135deg,var(--gold),#9A7A30);color:var(--dark);}
+.btn-ghost-full{background:var(--dark3);color:var(--muted);border:1px solid var(--border);}
+/* TOAST */
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark2);border:1px solid var(--gold);border-radius:12px;padding:12px 20px;font-size:13px;display:flex;align-items:center;gap:8px;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+/* EMPTY STATE */
+.empty{text-align:center;padding:30px;color:var(--muted);font-size:13px;}
+.empty .ico{font-size:40px;margin-bottom:10px;}
+/* FIREBASE STATUS */
+.fb-status{position:fixed;top:70px;right:16px;font-size:11px;padding:4px 10px;border-radius:20px;z-index:50;font-family:'Cairo',sans-serif;}
+.fb-ok{background:rgba(34,197,94,0.15);color:var(--green);border:1px solid rgba(34,197,94,0.3);}
+.fb-err{background:rgba(239,68,68,0.15);color:var(--red);border:1px solid rgba(239,68,68,0.3);}
+/* STAGE SELECT in modal */
+.stage-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:6px;}
+.stage-opt{padding:8px 4px;border-radius:8px;border:1px solid var(--border);background:var(--dark3);text-align:center;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);}
+.stage-opt.selected{border-color:var(--gold);color:var(--gold);background:rgba(201,168,76,0.1);}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div>
+    <h1>🏢 عقاري CRM</h1>
+    <span id="dateStr"></span>
+  </div>
+  <button class="add-btn" onclick="openModal('addLeadModal')">➕ ليد جديد</button>
+</div>
+
+<div id="fbStatus" class="fb-status fb-err" style="display:none">⚠️ Firebase غير متصل</div>
+
+<!-- ======== DASHBOARD ======== -->
+<div class="page active" id="pg-dash">
+  <div class="stats-row">
+    <div class="stat-box"><div class="lbl">إجمالي الليدز</div><div class="val gold-val" id="statTotal">0</div><div class="chg">جميع العملاء</div></div>
+    <div class="stat-box"><div class="lbl">صفقات مغلقة</div><div class="val green-val" id="statClosed">0</div><div class="chg">هذا الشهر</div></div>
+    <div class="stat-box"><div class="lbl">مراحل نشطة</div><div class="val blue-val" id="statActive">0</div><div class="chg">في المسار</div></div>
+    <div class="stat-box"><div class="lbl">إجمالي الميزانيات</div><div class="val purple-val" id="statBudget">0</div><div class="chg">درهم إماراتي</div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head">🎯 قمع المبيعات</div>
+    <div class="sec-body" id="funnelBody">
+      <div class="funnel-row"><div class="funnel-lbl">جديد</div><div class="funnel-wrap"><div class="funnel-fill" id="f0" style="width:0%;background:var(--blue)">0</div></div><div class="funnel-num" id="fn0" style="color:var(--blue)">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">تواصل</div><div class="funnel-wrap"><div class="funnel-fill" id="f1" style="width:0%;background:var(--purple)">0</div></div><div class="funnel-num" id="fn1" style="color:var(--purple)">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">اهتمام</div><div class="funnel-wrap"><div class="funnel-fill" id="f2" style="width:0%;background:var(--gold)">0</div></div><div class="funnel-num" id="fn2" style="color:var(--gold)">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">عرض</div><div class="funnel-wrap"><div class="funnel-fill" id="f3" style="width:0%;background:var(--orange)">0</div></div><div class="funnel-num" id="fn3" style="color:var(--orange)">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">مغلق</div><div class="funnel-wrap"><div class="funnel-fill" id="f4" style="width:0%;background:var(--green)">0</div></div><div class="funnel-num" id="fn4" style="color:var(--green)">0</div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head">🔥 أحدث الليدز <button class="sec-btn" onclick="goPage('pg-clients',2)">عرض الكل</button></div>
+    <div class="sec-body" style="padding:0 16px" id="dashLeads">
+      <div class="empty"><div class="ico">👥</div>لا يوجد عملاء بعد</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== PIPELINE ======== -->
+<div class="page" id="pg-pipe">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <span style="font-size:13px;color:var(--muted)" id="pipeCount">0 ليد</span>
+    <button class="add-btn" onclick="openModal('addLeadModal')">➕ إضافة</button>
+  </div>
+  <div class="pipeline-scroll" id="pipelineWrap">
+    <div class="pipe-col">
+      <div class="pipe-head"><span><span class="pdot" style="background:var(--blue)"></span>جديد</span><span id="pc0" style="font-size:11px;color:var(--muted)">0</span></div>
+      <div class="pipe-body" id="pipe0"></div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-head"><span><span class="pdot" style="background:var(--purple)"></span>تواصل</span><span id="pc1" style="font-size:11px;color:var(--muted)">0</span></div>
+      <div class="pipe-body" id="pipe1"></div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-head"><span><span class="pdot" style="background:var(--gold)"></span>اهتمام</span><span id="pc2" style="font-size:11px;color:var(--muted)">0</span></div>
+      <div class="pipe-body" id="pipe2"></div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-head"><span><span class="pdot" style="background:var(--orange)"></span>عرض</span><span id="pc3" style="font-size:11px;color:var(--muted)">0</span></div>
+      <div class="pipe-body" id="pipe3"></div>
+    </div>
+    <div class="pipe-col">
+      <div class="pipe-head"><span><span class="pdot" style="background:var(--green)"></span>مغلق</span><span id="pc4" style="font-size:11px;color:var(--muted)">0</span></div>
+      <div class="pipe-body" id="pipe4"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== CLIENTS ======== -->
+<div class="page" id="pg-clients">
+  <div class="tabs">
+    <div class="tab active" onclick="filterLeads('all',this)">الكل</div>
+    <div class="tab" onclick="filterLeads('جديد',this)">🆕 جديد</div>
+    <div class="tab" onclick="filterLeads('تواصل',this)">📞 تواصل</div>
+    <div class="tab" onclick="filterLeads('اهتمام',this)">⭐ اهتمام</div>
+    <div class="tab" onclick="filterLeads('عرض',this)">📋 عرض</div>
+    <div class="tab" onclick="filterLeads('مغلق',this)">✅ مغلق</div>
+  </div>
+  <button class="add-btn" style="width:100%;justify-content:center;margin-bottom:14px;padding:12px" onclick="openModal('addLeadModal')">➕ إضافة عميل جديد</button>
+  <div class="sec">
+    <div class="sec-body" style="padding:0 16px" id="clientsList">
+      <div class="empty"><div class="ico">👥</div>لا يوجد عملاء بعد</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== PROPERTIES ======== -->
+<div class="page" id="pg-props">
+  <div class="tabs">
+    <div class="tab active" onclick="setTab(this)">الكل</div>
+    <div class="tab" onclick="setTab(this)">🏠 شقق</div>
+    <div class="tab" onclick="setTab(this)">🏡 فلل</div>
+    <div class="tab" onclick="setTab(this)">🏢 تجاري</div>
+    <div class="tab" onclick="setTab(this)">🏗️ أراضي</div>
+  </div>
+  <button class="add-btn" style="width:100%;justify-content:center;margin-bottom:14px;padding:12px" onclick="openModal('addPropModal')">➕ إضافة عقار</button>
+  <div id="propsList">
+    <div class="empty"><div class="ico">🏠</div>لا يوجد عقارات بعد</div>
+  </div>
+</div>
+
+<!-- ======== CALENDAR ======== -->
+<div class="page" id="pg-cal">
+  <button class="add-btn" style="width:100%;justify-content:center;margin-bottom:14px;padding:12px" onclick="openModal('addApptModal')">➕ إضافة موعد</button>
+  <div class="sec">
+    <div class="sec-head">📅 المواعيد القادمة</div>
+    <div class="sec-body" id="apptsList">
+      <div class="empty"><div class="ico">📅</div>لا يوجد مواعيد بعد</div>
+    </div>
+  </div>
+</div>
+
+<!-- ======== REPORTS ======== -->
+<div class="page" id="pg-reports">
+  <div class="stats-row">
+    <div class="stat-box"><div class="lbl">إجمالي الليدز</div><div class="val gold-val" id="r-total">0</div></div>
+    <div class="stat-box"><div class="lbl">صفقات مغلقة</div><div class="val green-val" id="r-closed">0</div></div>
+    <div class="stat-box"><div class="lbl">نسبة الإغلاق</div><div class="val blue-val" id="r-rate">0%</div></div>
+    <div class="stat-box"><div class="lbl">إجمالي المواعيد</div><div class="val purple-val" id="r-appts">0</div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-head">🏆 توزيع المراحل</div>
+    <div class="sec-body" id="reportFunnel">
+      <div class="funnel-row"><div class="funnel-lbl">جديد</div><div class="funnel-wrap"><div class="funnel-fill" id="rf0" style="width:0%;background:var(--blue)">0</div></div><div class="funnel-num" id="rfn0">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">تواصل</div><div class="funnel-wrap"><div class="funnel-fill" id="rf1" style="width:0%;background:var(--purple)">0</div></div><div class="funnel-num" id="rfn1">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">اهتمام</div><div class="funnel-wrap"><div class="funnel-fill" id="rf2" style="width:0%;background:var(--gold)">0</div></div><div class="funnel-num" id="rfn2">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">عرض</div><div class="funnel-wrap"><div class="funnel-fill" id="rf3" style="width:0%;background:var(--orange)">0</div></div><div class="funnel-num" id="rfn3">0</div></div>
+      <div class="funnel-row"><div class="funnel-lbl">مغلق</div><div class="funnel-wrap"><div class="funnel-fill" id="rf4" style="width:0%;background:var(--green)">0</div></div><div class="funnel-num" id="rfn4">0</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="goPage('pg-dash',0)"><span class="ico">📊</span>الرئيسية</button>
+  <button class="nav-btn" onclick="goPage('pg-pipe',1)"><span class="ico">🔄</span>المسار</button>
+  <button class="nav-btn" onclick="goPage('pg-clients',2)"><span class="ico">👥</span>العملاء</button>
+  <button class="nav-btn" onclick="goPage('pg-props',3)"><span class="ico">🏠</span>العقارات</button>
+  <button class="nav-btn" onclick="goPage('pg-cal',4)"><span class="ico">📅</span>المواعيد</button>
+  <button class="nav-btn" onclick="goPage('pg-reports',5)"><span class="ico">📈</span>التقارير</button>
+</nav>
+
+<!-- ======== MODALS ======== -->
+
+<!-- ADD LEAD -->
+<div class="modal-bg" id="addLeadModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">➕ إضافة ليد جديد</div><button class="modal-close" onclick="closeModal('addLeadModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">الاسم *</label><input id="l-name" type="text" class="form-input" placeholder="اسم العميل"></div>
+        <div class="form-group"><label class="form-label">الجوال *</label><input id="l-phone" type="tel" class="form-input" placeholder="+971 / أي رقم دولي"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">المنطقة في دبي</label>
+          <select id="l-city" class="form-select">
+            <option>دبي مارينا</option><option>وسط مدينة دبي</option><option>الخليج التجاري</option>
+            <option>نخلة جميرا</option><option>جميرا</option><option>ديرة</option>
+            <option>البرشاء</option><option>مردف</option><option>قرية جميرا الدائرية</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">نوع العقار</label>
+          <select id="l-type" class="form-select">
+            <option>شقة</option><option>فيلا</option><option>أرض</option><option>مكتب</option><option>محل</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">الميزانية (درهم)</label><input id="l-budget" type="number" class="form-input" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">المصدر</label>
+          <select id="l-source" class="form-select">
+            <option>إنستجرام</option><option>فيسبوك</option><option>توصية</option><option>موقع</option><option>أخرى</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">المرحلة</label>
+        <div class="stage-grid">
+          <div class="stage-opt selected" onclick="selectStage(this,'جديد')">🆕 جديد</div>
+          <div class="stage-opt" onclick="selectStage(this,'تواصل')">📞 تواصل</div>
+          <div class="stage-opt" onclick="selectStage(this,'اهتمام')">⭐ اهتمام</div>
+          <div class="stage-opt" onclick="selectStage(this,'عرض')">📋 عرض</div>
+          <div class="stage-opt" onclick="selectStage(this,'مغلق')">✅ مغلق</div>
+        </div>
+        <input type="hidden" id="l-stage" value="جديد">
+      </div>
+      <div class="form-group"><label class="form-label">ملاحظات</label><textarea id="l-notes" class="form-input" rows="2" placeholder="تفاصيل إضافية..."></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-full btn-ghost-full" onclick="closeModal('addLeadModal')">إلغاء</button>
+      <button class="btn-full btn-gold-full" onclick="saveLead()">💾 حفظ العميل</button>
+    </div>
+  </div>
+</div>
+
+<!-- MOVE STAGE MODAL -->
+<div class="modal-bg" id="moveStageModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">🔄 تغيير المرحلة</div><button class="modal-close" onclick="closeModal('moveStageModal')">✕</button></div>
+    <div class="modal-body">
+      <div style="font-size:14px;font-weight:700;margin-bottom:4px" id="moveLeadName"></div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:16px" id="moveLeadCurrent"></div>
+      <div class="stage-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="stage-opt" onclick="confirmMove('جديد')">🆕 جديد</div>
+        <div class="stage-opt" onclick="confirmMove('تواصل')">📞 تواصل</div>
+        <div class="stage-opt" onclick="confirmMove('اهتمام')">⭐ اهتمام</div>
+        <div class="stage-opt" onclick="confirmMove('عرض')">📋 عرض</div>
+        <div class="stage-opt" onclick="confirmMove('مغلق')">✅ مغلق</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD APPOINTMENT -->
+<div class="modal-bg" id="addApptModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">📅 إضافة موعد</div><button class="modal-close" onclick="closeModal('addApptModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">العميل</label><input id="a-client" type="text" class="form-input" placeholder="اسم العميل"></div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">النوع</label>
+          <select id="a-type" class="form-select"><option>📞 مكالمة</option><option>🏠 معاينة</option><option>🤝 اجتماع</option><option>📄 توقيع</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">التاريخ</label><input id="a-date" type="date" class="form-input"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">الوقت</label><input id="a-time" type="time" class="form-input"></div>
+        <div class="form-group"><label class="form-label">المدة</label>
+          <select id="a-dur" class="form-select"><option>30 دقيقة</option><option>ساعة</option><option>ساعتين</option></select>
+        </div>
+      </div>
+      <div class="form-group"><label class="form-label">ملاحظة</label><input id="a-notes" type="text" class="form-input" placeholder="موضوع الموعد..."></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-full btn-ghost-full" onclick="closeModal('addApptModal')">إلغاء</button>
+      <button class="btn-full btn-gold-full" onclick="saveAppt()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PROPERTY -->
+<div class="modal-bg" id="addPropModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">🏠 إضافة عقار</div><button class="modal-close" onclick="closeModal('addPropModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">اسم العقار *</label><input id="p-name" type="text" class="form-input" placeholder="مثال: شقة دبي مارينا"></div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">النوع</label>
+          <select id="p-type" class="form-select"><option>شقة</option><option>فيلا</option><option>أرض</option><option>مكتب</option><option>محل</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">الحالة</label>
+          <select id="p-status" class="form-select"><option>متاح</option><option>محجوز</option><option>مؤجر</option><option>مباع</option></select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">السعر (درهم)</label><input id="p-price" type="number" class="form-input" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">المساحة م²</label><input id="p-area" type="number" class="form-input" placeholder="0"></div>
+      </div>
+      <div class="form-group"><label class="form-label">الموقع</label><input id="p-loc" type="text" class="form-input" placeholder="المنطقة، دبي"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-full btn-ghost-full" onclick="closeModal('addPropModal')">إلغاء</button>
+      <button class="btn-full btn-gold-full" onclick="saveProp()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="tIcon">✅</span><span id="tMsg">تم</span></div>
+
+<!-- ======== FIREBASE + APP LOGIC ======== -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// ============================================================
+// 🔥 ضع هنا بيانات Firebase الخاصة بك بعد إنشاء المشروع
+// ============================================================
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+// ============================================================
+
+let db, leadsCol, apptsCol, propsCol;
+let allLeads = [], allAppts = [], allProps = [];
+let currentFilter = 'all';
+let moveTargetId = '';
+
+try {
+  const app = initializeApp(firebaseConfig);
+  db = getFirestore(app);
+  leadsCol = collection(db, 'leads');
+  apptsCol = collection(db, 'appointments');
+  propsCol = collection(db, 'properties');
+
+  // ── REALTIME LISTENERS ──
+  onSnapshot(query(leadsCol, orderBy('createdAt','desc')), snap => {
+    allLeads = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAll();
+  });
+
+  onSnapshot(query(apptsCol, orderBy('createdAt','desc')), snap => {
+    allAppts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAppts();
+    updateReports();
+  });
+
+  onSnapshot(query(propsCol, orderBy('createdAt','desc')), snap => {
+    allProps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderProps();
+  });
+
+  document.getElementById('fbStatus').style.display = 'none';
+  window._fbReady = true;
+  window._db = { db, leadsCol, apptsCol, propsCol, addDoc, deleteDoc, updateDoc, doc, serverTimestamp };
+
+} catch(e) {
+  document.getElementById('fbStatus').style.display = 'block';
+  console.warn('Firebase not configured yet:', e.message);
+  window._fbReady = false;
+}
+
+// ── RENDER LEADS ──
+function renderAll() {
+  renderDash();
+  renderPipeline();
+  renderClients(currentFilter);
+  updateStats();
+  updateReports();
+}
+
+function stageColor(s){
+  return s==='جديد'?'b-blue':s==='تواصل'?'b-purple':s==='اهتمام'?'b-gold':s==='عرض'?'b-orange':'b-green';
+}
+
+function makeLeadRow(lead, showActions=true) {
+  const av = (lead.name||'؟').substring(0,2);
+  const budget = lead.budget ? Number(lead.budget).toLocaleString()+' د.إ' : '—';
+  const actions = showActions ? `
+    <div class="lead-actions">
+      <button class="act-btn" onclick="openMoveStage('${lead.id}','${lead.name}','${lead.stage||'جديد'}')">🔄 تغيير المرحلة</button>
+      <button class="act-btn del" onclick="deleteLead('${lead.id}','${lead.name}')">🗑️ حذف</button>
+    </div>` : '';
+  return `<div class="lead-row">
+    <div class="av">${av}</div>
+    <div class="lead-info">
+      <div class="lead-name">${lead.name||'—'}</div>
+      <div class="lead-sub">📞 ${lead.phone||'—'} | ${lead.city||''}</div>
+      ${actions}
+    </div>
+    <div class="lead-right">
+      <div class="lead-price">${budget}</div>
+      <div class="badge ${stageColor(lead.stage||'جديد')}">${lead.stage||'جديد'}</div>
+    </div>
+  </div>`;
+}
+
+function renderDash() {
+  const el = document.getElementById('dashLeads');
+  const recent = allLeads.slice(0,5);
+  el.innerHTML = recent.length ? recent.map(l=>makeLeadRow(l,false)).join('') :
+    '<div class="empty"><div class="ico">👥</div>لا يوجد عملاء بعد</div>';
+}
+
+function renderPipeline() {
+  const stages = ['جديد','تواصل','اهتمام','عرض','مغلق'];
+  stages.forEach((s,i) => {
+    const filtered = allLeads.filter(l=>(l.stage||'جديد')===s);
+    document.getElementById('pc'+i).textContent = filtered.length;
+    const body = document.getElementById('pipe'+i);
+    body.innerHTML = filtered.length ? filtered.map(l=>`
+      <div class="pipe-card">
+        <div class="p-name">${l.name||'—'}</div>
+        <div class="p-type">${l.propType||''} • ${l.city||''}</div>
+        <div class="p-price">${l.budget?Number(l.budget).toLocaleString()+' د.إ':'—'}</div>
+        <div class="pipe-card-actions">
+          <button class="pipe-btn" onclick="openMoveStage('${l.id}','${l.name}','${s}')">🔄 نقل</button>
+          <button class="pipe-btn del-btn" onclick="deleteLead('${l.id}','${l.name}')">🗑️</button>
+        </div>
+      </div>`).join('')
+    : '<div style="font-size:11px;color:var(--muted);text-align:center;padding:12px">فارغ</div>';
+  });
+  document.getElementById('pipeCount').textContent = allLeads.length + ' ليد';
+}
+
+function renderClients(filter) {
+  currentFilter = filter;
+  const filtered = filter==='all' ? allLeads : allLeads.filter(l=>(l.stage||'جديد')===filter);
+  const el = document.getElementById('clientsList');
+  el.innerHTML = filtered.length ? filtered.map(l=>makeLeadRow(l,true)).join('') :
+    '<div class="empty"><div class="ico">👥</div>لا يوجد عملاء</div>';
+}
+
+function renderAppts() {
+  const el = document.getElementById('apptsList');
+  el.innerHTML = allAppts.length ? allAppts.map(a=>`
+    <div class="appt ${a.type&&a.type.includes('مكالمة')?'call':a.type&&a.type.includes('معاينة')?'visit':'meeting'}">
+      <div class="appt-time">${a.time||'—'}</div>
+      <div style="flex:1">
+        <div class="appt-title">${a.type||''} - ${a.client||''}</div>
+        <div class="appt-sub">${a.date||''} ${a.notes?'• '+a.notes:''}</div>
+      </div>
+      <button class="act-btn del" onclick="deleteAppt('${a.id}')">🗑️</button>
+    </div>`).join('')
+  : '<div class="empty"><div class="ico">📅</div>لا يوجد مواعيد بعد</div>';
+}
+
+function renderProps() {
+  const icons = {شقة:'🏠',فيلا:'🏡',أرض:'🏗️',مكتب:'🏢',محل:'🏪'};
+  const statusColor = {متاح:'b-green',محجوز:'b-gold',مؤجر:'b-red',مباع:'b-purple'};
+  const el = document.getElementById('propsList');
+  el.innerHTML = allProps.length ? allProps.map(p=>`
+    <div class="prop-card">
+      <div class="prop-emoji">${icons[p.type]||'🏠'}</div>
+      <div class="prop-info">
+        <div class="prop-name">${p.name||'—'}</div>
+        <div class="prop-loc">📍 ${p.location||'دبي'}</div>
+        <div class="prop-price">${p.price?Number(p.price).toLocaleString()+' د.إ':'—'}</div>
+        <div class="prop-details">
+          ${p.area?`<span class="prop-det">📐 ${p.area}م²</span>`:''}
+          <span class="prop-det badge ${statusColor[p.status]||'b-green'}" style="margin-top:0">${p.status||'متاح'}</span>
+        </div>
+      </div>
+      <button class="act-btn del" onclick="deleteProp('${p.id}')">🗑️</button>
+    </div>`).join('')
+  : '<div class="empty"><div class="ico">🏠</div>لا يوجد عقارات بعد</div>';
+}
+
+function updateStats() {
+  const closed = allLeads.filter(l=>l.stage==='مغلق').length;
+  const active = allLeads.filter(l=>l.stage!=='مغلق').length;
+  const totalB = allLeads.reduce((s,l)=>s+(Number(l.budget)||0),0);
+  document.getElementById('statTotal').textContent = allLeads.length;
+  document.getElementById('statClosed').textContent = closed;
+  document.getElementById('statActive').textContent = active;
+  document.getElementById('statBudget').textContent = totalB>1000000?(totalB/1000000).toFixed(1)+'M':totalB>1000?(totalB/1000).toFixed(0)+'K':totalB;
+
+  const stages = ['جديد','تواصل','اهتمام','عرض','مغلق'];
+  const max = Math.max(...stages.map(s=>allLeads.filter(l=>(l.stage||'جديد')===s).length),1);
+  stages.forEach((s,i)=>{
+    const count = allLeads.filter(l=>(l.stage||'جديد')===s).length;
+    const pct = Math.round(count/max*100);
+    document.getElementById('f'+i).style.width = pct+'%';
+    document.getElementById('f'+i).textContent = count;
+    document.getElementById('fn'+i).textContent = count;
+  });
+}
+
+function updateReports() {
+  const closed = allLeads.filter(l=>l.stage==='مغلق').length;
+  const rate = allLeads.length ? Math.round(closed/allLeads.length*100) : 0;
+  document.getElementById('r-total').textContent = allLeads.length;
+  document.getElementById('r-closed').textContent = closed;
+  document.getElementById('r-rate').textContent = rate+'%';
+  document.getElementById('r-appts').textContent = allAppts.length;
+
+  const stages = ['جديد','تواصل','اهتمام','عرض','مغلق'];
+  const max = Math.max(...stages.map(s=>allLeads.filter(l=>(l.stage||'جديد')===s).length),1);
+  stages.forEach((s,i)=>{
+    const count = allLeads.filter(l=>(l.stage||'جديد')===s).length;
+    const pct = Math.round(count/max*100);
+    document.getElementById('rf'+i).style.width = pct+'%';
+    document.getElementById('rf'+i).textContent = count;
+    document.getElementById('rfn'+i).textContent = count;
+  });
+}
+
+// ── SAVE FUNCTIONS ──
+window.saveLead = async () => {
+  const name = document.getElementById('l-name').value.trim();
+  const phone = document.getElementById('l-phone').value.trim();
+  if(!name){ toast('أدخل اسم العميل ⚠️','⚠️'); return; }
+  if(!phone){ toast('أدخل رقم الجوال ⚠️','⚠️'); return; }
+  const data = {
+    name, phone,
+    city: document.getElementById('l-city').value,
+    propType: document.getElementById('l-type').value,
+    budget: document.getElementById('l-budget').value,
+    source: document.getElementById('l-source').value,
+    stage: document.getElementById('l-stage').value,
+    notes: document.getElementById('l-notes').value,
+    createdAt: window._fbReady ? serverTimestamp() : new Date().toISOString()
+  };
+  if(window._fbReady) {
+    await addDoc(leadsCol, data);
+  } else {
+    data.id = 'local_'+Date.now();
+    allLeads.unshift(data);
+    renderAll();
+  }
+  closeModal('addLeadModal');
+  toast('تم إضافة العميل! 🎉');
+  ['l-name','l-phone','l-budget','l-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('l-stage').value='جديد';
+  document.querySelectorAll('.stage-opt').forEach((o,i)=>o.classList.toggle('selected',i===0));
+};
+
+window.saveAppt = async () => {
+  const client = document.getElementById('a-client').value.trim();
+  if(!client){ toast('أدخل اسم العميل ⚠️','⚠️'); return; }
+  const data = {
+    client,
+    type: document.getElementById('a-type').value,
+    date: document.getElementById('a-date').value,
+    time: document.getElementById('a-time').value,
+    duration: document.getElementById('a-dur').value,
+    notes: document.getElementById('a-notes').value,
+    createdAt: window._fbReady ? serverTimestamp() : new Date().toISOString()
+  };
+  if(window._fbReady) await addDoc(apptsCol, data);
+  else { data.id='local_'+Date.now(); allAppts.unshift(data); renderAppts(); }
+  closeModal('addApptModal');
+  toast('تم حفظ الموعد! 📅');
+  ['a-client','a-date','a-time','a-notes'].forEach(id=>document.getElementById(id).value='');
+};
+
+window.saveProp = async () => {
+  const name = document.getElementById('p-name').value.trim();
+  if(!name){ toast('أدخل اسم العقار ⚠️','⚠️'); return; }
+  const data = {
+    name,
+    type: document.getElementById('p-type').value,
+    status: document.getElementById('p-status').value,
+    price: document.getElementById('p-price').value,
+    area: document.getElementById('p-area').value,
+    location: document.getElementById('p-loc').value,
+    createdAt: window._fbReady ? serverTimestamp() : new Date().toISOString()
+  };
+  if(window._fbReady) await addDoc(propsCol, data);
+  else { data.id='local_'+Date.now(); allProps.unshift(data); renderProps(); }
+  closeModal('addPropModal');
+  toast('تم إضافة العقار! 🏠');
+  ['p-name','p-price','p-area','p-loc'].forEach(id=>document.getElementById(id).value='');
+};
+
+// ── DELETE ──
+window.deleteLead = async (id, name) => {
+  if(!confirm('حذف العميل "'+name+'"؟')) return;
+  if(window._fbReady && !id.startsWith('local_')) await deleteDoc(doc(db,'leads',id));
+  else { allLeads = allLeads.filter(l=>l.id!==id); renderAll(); }
+  toast('تم الحذف 🗑️','🗑️');
+};
+
+window.deleteAppt = async (id) => {
+  if(!confirm('حذف هذا الموعد؟')) return;
+  if(window._fbReady && !id.startsWith('local_')) await deleteDoc(doc(db,'appointments',id));
+  else { allAppts = allAppts.filter(a=>a.id!==id); renderAppts(); }
+  toast('تم حذف الموعد 🗑️','🗑️');
+};
+
+window.deleteProp = async (id) => {
+  if(!confirm('حذف هذا العقار؟')) return;
+  if(window._fbReady && !id.startsWith('local_')) await deleteDoc(doc(db,'properties',id));
+  else { allProps = allProps.filter(p=>p.id!==id); renderProps(); }
+  toast('تم حذف العقار 🗑️','🗑️');
+};
+
+// ── MOVE STAGE ──
+window.openMoveStage = (id, name, currentStage) => {
+  moveTargetId = id;
+  document.getElementById('moveLeadName').textContent = name;
+  document.getElementById('moveLeadCurrent').textContent = 'المرحلة الحالية: '+currentStage;
+  openModal('moveStageModal');
+};
+
+window.confirmMove = async (newStage) => {
+  if(!moveTargetId) return;
+  if(window._fbReady && !moveTargetId.startsWith('local_')) {
+    await updateDoc(doc(db,'leads',moveTargetId), { stage: newStage });
+  } else {
+    const lead = allLeads.find(l=>l.id===moveTargetId);
+    if(lead) { lead.stage=newStage; renderAll(); }
+  }
+  closeModal('moveStageModal');
+  toast('تم النقل إلى '+newStage+' ✅');
+  moveTargetId='';
+};
+
+// ── FILTER CLIENTS ──
+window.filterLeads = (filter, el) => {
+  document.querySelectorAll('#pg-clients .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderClients(filter);
+};
+
+// ── PWA ──
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+
+</script>
+
+<script>
+// Non-module helpers
+const days=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const d=new Date();
+document.getElementById('dateStr').textContent=days[d.getDay()]+' '+d.getDate()+' '+months[d.getMonth()]+' '+d.getFullYear();
+
+const navBtns=document.querySelectorAll('.nav-btn');
+function goPage(id,idx){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  navBtns.forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  navBtns[idx].classList.add('active');
+  window.scrollTo(0,0);
+}
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+function toast(msg,icon='✅'){
+  const t=document.getElementById('toast');
+  document.getElementById('tMsg').textContent=msg;
+  document.getElementById('tIcon').textContent=icon;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+function selectStage(el,val){
+  el.closest('.stage-grid').querySelectorAll('.stage-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('l-stage').value=val;
+}
+function setTab(el){
+  el.closest('.tabs').querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+</body>
+</html>
