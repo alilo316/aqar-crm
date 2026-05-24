@@ -129,6 +129,45 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
 /* TOAST */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark2);border:1px solid var(--gold);border-radius:12px;padding:12px 20px;font-size:13px;display:flex;align-items:center;gap:8px;z-index:300;opacity:0;transition:all 0.3s;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* DESIGNER CARD */
+.designer-card{background:var(--dark2);border:1px solid var(--border);border-radius:16px;padding:24px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden;}
+.designer-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,0.08),transparent);pointer-events:none;}
+.designer-name-ar{font-family:'Cairo',sans-serif;font-size:26px;font-weight:900;color:var(--gold);letter-spacing:1px;margin-bottom:4px;}
+.designer-name-en{font-family:'Cairo',sans-serif;font-size:18px;font-weight:700;color:var(--text);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+.designer-title{font-size:13px;color:var(--muted);margin-bottom:14px;letter-spacing:1px;}
+.designer-divider{width:60px;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:0 auto 14px;}
+.designer-phone{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:20px;padding:8px 18px;font-size:14px;font-weight:700;color:var(--gold);text-decoration:none;direction:ltr;}
+.designer-phone:hover{background:rgba(201,168,76,0.2);}
+
+/* AUTH OVERLAY */
+.auth-overlay{position:fixed;inset:0;background:var(--dark);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px;}
+.auth-box{background:var(--dark2);border:1px solid var(--border);border-radius:20px;padding:32px 24px;width:100%;max-width:360px;text-align:center;}
+.auth-logo{font-size:48px;margin-bottom:8px;}
+.auth-title{font-size:22px;font-weight:900;color:var(--gold);margin-bottom:4px;}
+.auth-sub{font-size:12px;color:var(--muted);margin-bottom:24px;}
+.auth-input{width:100%;background:var(--dark3);border:1px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--text);font-family:'Cairo',sans-serif;font-size:15px;outline:none;margin-bottom:12px;text-align:center;}
+.auth-input:focus{border-color:var(--gold);}
+.auth-btn{width:100%;padding:13px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),#9A7A30);color:var(--dark);font-family:'Cairo',sans-serif;font-size:15px;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.auth-err{font-size:12px;color:var(--red);margin-top:4px;min-height:18px;}
+.auth-pending{font-size:13px;color:var(--orange);padding:12px;background:rgba(249,115,22,0.1);border-radius:10px;border:1px solid rgba(249,115,22,0.2);}
+
+/* ADMIN PANEL */
+.user-item{display:flex;align-items:center;gap:10px;padding:12px;background:var(--dark3);border-radius:10px;margin-bottom:8px;}
+.user-av{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,#9A7A30,#263045);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--gold);flex-shrink:0;}
+.user-info{flex:1;min-width:0;}
+.user-name{font-size:13px;font-weight:700;}
+.user-role{font-size:11px;color:var(--muted);}
+.user-actions{display:flex;gap:6px;}
+.u-btn{border:1px solid var(--border);background:var(--dark4);border-radius:7px;padding:5px 9px;font-size:11px;cursor:pointer;color:var(--muted);font-family:'Cairo',sans-serif;}
+.u-btn.approve{border-color:rgba(34,197,94,0.4);color:var(--green);}
+.u-btn.revoke{border-color:rgba(239,68,68,0.4);color:var(--red);}
+.u-btn.del{border-color:rgba(239,68,68,0.3);color:var(--red);}
+.status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.dot-green{background:var(--green);}
+.dot-orange{background:var(--orange);}
+.dot-red{background:var(--red);}
+
 /* EMPTY STATE */
 .empty{text-align:center;padding:30px;color:var(--muted);font-size:13px;}
 .empty .ico{font-size:40px;margin-bottom:10px;}
@@ -258,6 +297,14 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
 
 <!-- ======== REPORTS ======== -->
 <div class="page" id="pg-reports">
+  <div class="designer-card">
+    <div class="designer-name-ar">علي خلاف</div>
+    <div class="designer-name-en">Ali Khallaf</div>
+    <div class="designer-divider"></div>
+    <div class="designer-title">🏢 مستشار عقاري | Real Estate Consultant</div>
+    <a href="tel:+971542676769" class="designer-phone">📞 +971 54 267 6769</a>
+  </div>
+
   <div class="stats-row">
     <div class="stat-box"><div class="lbl">إجمالي الليدز</div><div class="val gold-val" id="r-total">0</div></div>
     <div class="stat-box"><div class="lbl">صفقات مغلقة</div><div class="val green-val" id="r-closed">0</div></div>
@@ -276,6 +323,56 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
   </div>
 </div>
 
+
+<!-- AUTH OVERLAY -->
+<div id="authOverlay" class="auth-overlay">
+  <div class="auth-box">
+    <div class="auth-logo">🏢</div>
+    <div class="auth-title">عقاري CRM</div>
+    <div class="auth-sub">دبي | نظام إدارة العملاء</div>
+    <div id="authForm">
+      <input id="auth-email" type="email" class="auth-input" placeholder="البريد الإلكتروني">
+      <input id="auth-pass" type="password" class="auth-input" placeholder="كلمة المرور">
+      <button class="auth-btn" onclick="doLogin()">🔑 دخول</button>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px">— أو —</div>
+      <button class="auth-btn" style="background:var(--dark3);color:var(--gold);border:1px solid var(--border)" onclick="showRegister()">📝 طلب حساب جديد</button>
+      <div class="auth-err" id="authErr"></div>
+    </div>
+    <div id="registerForm" style="display:none">
+      <input id="reg-name" type="text" class="auth-input" placeholder="الاسم الكامل">
+      <input id="reg-email" type="email" class="auth-input" placeholder="البريد الإلكتروني">
+      <input id="reg-pass" type="password" class="auth-input" placeholder="كلمة المرور">
+      <button class="auth-btn" onclick="doRegister()">📨 إرسال طلب</button>
+      <button class="auth-btn" style="background:var(--dark3);color:var(--muted);border:1px solid var(--border);margin-top:0" onclick="showLogin()">← رجوع</button>
+      <div class="auth-err" id="regErr"></div>
+    </div>
+    <div id="pendingMsg" style="display:none">
+      <div class="auth-pending">⏳ طلبك قيد المراجعة من المدير<br>سيتم إعلامك عند الموافقة</div>
+      <button class="auth-btn" style="margin-top:16px;background:var(--dark3);color:var(--muted);border:1px solid var(--border)" onclick="showLogin()">← رجوع</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PAGE -->
+<div class="page" id="pg-admin">
+  <div class="sec">
+    <div class="sec-head">👑 لوحة الصلاحيات <span id="adminBadge" style="font-size:11px;color:var(--gold)"></span></div>
+    <div class="sec-body">
+      <div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:10px">⏳ طلبات الانتظار</div>
+      <div id="pendingUsers"><div class="empty" style="padding:10px"><div class="ico" style="font-size:24px">✅</div>لا يوجد طلبات</div></div>
+      <div style="font-size:13px;font-weight:700;color:var(--muted);margin:16px 0 10px">✅ المستخدمون النشطون</div>
+      <div id="activeUsers"><div class="empty" style="padding:10px"><div class="ico" style="font-size:24px">👥</div>لا يوجد مستخدمون</div></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-head">🔐 إجراءات المدير</div>
+    <div class="sec-body">
+      <button class="add-btn" style="width:100%;justify-content:center;padding:12px;margin-bottom:10px" onclick="openModal('addUserModal')">➕ إضافة مستخدم يدوياً</button>
+      <button class="act-btn" style="width:100%;justify-content:center;padding:10px;color:var(--red);border-color:rgba(239,68,68,0.3)" onclick="doLogout()">🚪 تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
   <button class="nav-btn active" onclick="goPage('pg-dash',0)"><span class="ico">📊</span>الرئيسية</button>
@@ -284,6 +381,7 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
   <button class="nav-btn" onclick="goPage('pg-props',3)"><span class="ico">🏠</span>العقارات</button>
   <button class="nav-btn" onclick="goPage('pg-cal',4)"><span class="ico">📅</span>المواعيد</button>
   <button class="nav-btn" onclick="goPage('pg-reports',5)"><span class="ico">📈</span>التقارير</button>
+  <button class="nav-btn" id="adminNavBtn" style="display:none" onclick="goPage('pg-admin',6)"><span class="ico">👑</span>الإدارة</button>
 </nav>
 
 <!-- ======== MODALS ======== -->
@@ -410,16 +508,42 @@ body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--text);min
   </div>
 </div>
 
+
+<!-- ADD USER MODAL -->
+<div class="modal-bg" id="addUserModal">
+  <div class="modal">
+    <div class="modal-head"><div class="modal-title">➕ إضافة مستخدم</div><button class="modal-close" onclick="closeModal('addUserModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="form-group"><label class="form-label">الاسم</label><input id="nu-name" type="text" class="form-input" placeholder="اسم المستخدم"></div>
+      <div class="form-group"><label class="form-label">البريد الإلكتروني</label><input id="nu-email" type="email" class="form-input" placeholder="email@example.com"></div>
+      <div class="form-group"><label class="form-label">كلمة المرور</label><input id="nu-pass" type="password" class="form-input" placeholder="كلمة مرور قوية"></div>
+      <div class="form-group"><label class="form-label">الصلاحية</label>
+        <select id="nu-role" class="form-select">
+          <option value="agent">وكيل عقاري</option>
+          <option value="viewer">مشاهدة فقط</option>
+          <option value="admin">مدير</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-full btn-ghost-full" onclick="closeModal('addUserModal')">إلغاء</button>
+      <button class="btn-full btn-gold-full" onclick="addUserManually()">💾 إضافة</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"><span id="tIcon">✅</span><span id="tMsg">تم</span></div>
 
 <!-- ======== FIREBASE + APP LOGIC ======== -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy, serverTimestamp }
+import { getFirestore, collection, addDoc, deleteDoc, updateDoc, doc, onSnapshot, query, orderBy, serverTimestamp, setDoc, getDoc }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 // ============================================================
-// 🔥 ضع هنا بيانات Firebase الخاصة بك بعد إنشاء المشروع
+// 🔥 بيانات Firebase
 // ============================================================
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
@@ -431,52 +555,227 @@ const firebaseConfig = {
 };
 // ============================================================
 
-let db, leadsCol, apptsCol, propsCol;
+// ADMIN EMAIL - غيره لإيميلك
+const ADMIN_EMAIL = "ali.khallaf@admin.com";
+
+let db, auth, leadsCol, apptsCol, propsCol, usersCol;
 let allLeads = [], allAppts = [], allProps = [];
 let currentFilter = 'all';
 let moveTargetId = '';
+let currentUser = null;
+let currentUserData = null;
 
 try {
   const app = initializeApp(firebaseConfig);
   db = getFirestore(app);
+  auth = getAuth(app);
   leadsCol = collection(db, 'leads');
   apptsCol = collection(db, 'appointments');
   propsCol = collection(db, 'properties');
-
-  // ── REALTIME LISTENERS ──
-  onSnapshot(query(leadsCol, orderBy('createdAt','desc')), snap => {
-    allLeads = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderAll();
-  });
-
-  onSnapshot(query(apptsCol, orderBy('createdAt','desc')), snap => {
-    allAppts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderAppts();
-    updateReports();
-  });
-
-  onSnapshot(query(propsCol, orderBy('createdAt','desc')), snap => {
-    allProps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderProps();
-  });
+  usersCol = collection(db, 'users');
 
   document.getElementById('fbStatus').style.display = 'none';
   window._fbReady = true;
   window._db = { db, leadsCol, apptsCol, propsCol, addDoc, deleteDoc, updateDoc, doc, serverTimestamp };
 
+  // ── AUTH STATE ──
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      if (userDoc.exists()) {
+        currentUserData = userDoc.data();
+        currentUser = user;
+        if (currentUserData.status === 'approved') {
+          hideAuthOverlay();
+          setupListeners();
+          if (currentUserData.role === 'admin') {
+            document.getElementById('adminNavBtn').style.display = 'flex';
+            document.getElementById('adminBadge').textContent = '• '+user.email;
+            listenUsers();
+          }
+        } else if (currentUserData.status === 'pending') {
+          document.getElementById('authForm').style.display = 'none';
+          document.getElementById('registerForm').style.display = 'none';
+          document.getElementById('pendingMsg').style.display = 'block';
+        } else {
+          // revoked
+          showError('authErr','❌ تم إلغاء صلاحيتك. تواصل مع المدير.');
+          await signOut(auth);
+        }
+      } else {
+        // New admin auto-approve
+        if (user.email === ADMIN_EMAIL) {
+          await setDoc(doc(db, 'users', user.uid), {
+            name: 'علي خلاف', email: user.email,
+            role: 'admin', status: 'approved', createdAt: serverTimestamp()
+          });
+          currentUserData = { role: 'admin', status: 'approved' };
+          currentUser = user;
+          hideAuthOverlay();
+          setupListeners();
+          document.getElementById('adminNavBtn').style.display = 'flex';
+          listenUsers();
+        } else {
+          await signOut(auth);
+        }
+      }
+    } else {
+      currentUser = null;
+      currentUserData = null;
+      showAuthOverlay();
+    }
+  });
+
 } catch(e) {
   document.getElementById('fbStatus').style.display = 'block';
-  console.warn('Firebase not configured yet:', e.message);
+  console.warn('Firebase error:', e.message);
   window._fbReady = false;
+  hideAuthOverlay();
+  setupListeners();
 }
+
+function hideAuthOverlay(){ document.getElementById('authOverlay').style.display='none'; }
+function showAuthOverlay(){ document.getElementById('authOverlay').style.display='flex'; }
+
+function setupListeners() {
+  if (!window._fbReady) return;
+  onSnapshot(query(leadsCol, orderBy('createdAt','desc')), snap => {
+    allLeads = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAll();
+  });
+  onSnapshot(query(apptsCol, orderBy('createdAt','desc')), snap => {
+    allAppts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderAppts();
+    updateReports();
+  });
+  onSnapshot(query(propsCol, orderBy('createdAt','desc')), snap => {
+    allProps = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderProps();
+  });
+}
+
+function listenUsers() {
+  onSnapshot(query(usersCol, orderBy('createdAt','desc')), snap => {
+    const users = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderUsers(users);
+  });
+}
+
+function renderUsers(users) {
+  const pending = users.filter(u => u.status === 'pending');
+  const active  = users.filter(u => u.status === 'approved');
+
+  const pendingEl = document.getElementById('pendingUsers');
+  pendingEl.innerHTML = pending.length ? pending.map(u => `
+    <div class="user-item">
+      <div class="status-dot dot-orange"></div>
+      <div class="user-av">${(u.name||'?').substring(0,2)}</div>
+      <div class="user-info"><div class="user-name">${u.name||'—'}</div><div class="user-role">${u.email||''}</div></div>
+      <div class="user-actions">
+        <button class="u-btn approve" onclick="approveUser('${u.id}','${u.name}')">✅ قبول</button>
+        <button class="u-btn del" onclick="rejectUser('${u.id}','${u.name}')">❌ رفض</button>
+      </div>
+    </div>`).join('')
+  : '<div class="empty" style="padding:10px"><div class="ico" style="font-size:24px">✅</div>لا يوجد طلبات</div>';
+
+  const activeEl = document.getElementById('activeUsers');
+  activeEl.innerHTML = active.length ? active.map(u => `
+    <div class="user-item">
+      <div class="status-dot ${u.role==='admin'?'dot-orange':'dot-green'}"></div>
+      <div class="user-av">${(u.name||'?').substring(0,2)}</div>
+      <div class="user-info">
+        <div class="user-name">${u.name||'—'} ${u.role==='admin'?'👑':''}</div>
+        <div class="user-role">${u.email||''} • ${u.role==='admin'?'مدير':u.role==='viewer'?'مشاهدة فقط':'وكيل'}</div>
+      </div>
+      <div class="user-actions">
+        ${u.role!=='admin'?`<button class="u-btn revoke" onclick="revokeUser('${u.id}','${u.name}')">🚫 إلغاء</button>`:''}
+      </div>
+    </div>`).join('')
+  : '<div class="empty" style="padding:10px"><div class="ico" style="font-size:24px">👥</div>لا يوجد مستخدمون</div>';
+}
+
+// ── AUTH FUNCTIONS ──
+window.doLogin = async () => {
+  const email = document.getElementById('auth-email').value.trim();
+  const pass  = document.getElementById('auth-pass').value;
+  if(!email||!pass){ showError('authErr','أدخل البريد وكلمة المرور'); return; }
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    showError('authErr', e.code==='auth/invalid-credential'?'❌ بيانات خاطئة':'❌ '+e.message);
+  }
+};
+
+window.doRegister = async () => {
+  const name  = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass  = document.getElementById('reg-pass').value;
+  if(!name||!email||!pass){ showError('regErr','أكمل جميع الحقول'); return; }
+  if(pass.length<6){ showError('regErr','كلمة المرور 6 أحرف على الأقل'); return; }
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    const status = email===ADMIN_EMAIL ? 'approved' : 'pending';
+    const role   = email===ADMIN_EMAIL ? 'admin' : 'agent';
+    await setDoc(doc(db,'users',cred.user.uid), {
+      name, email, role, status, createdAt: serverTimestamp()
+    });
+    if(status==='pending'){
+      await signOut(auth);
+      document.getElementById('registerForm').style.display='none';
+      document.getElementById('pendingMsg').style.display='block';
+    }
+  } catch(e) {
+    showError('regErr', e.code==='auth/email-already-in-use'?'❌ البريد مستخدم مسبقاً':'❌ '+e.message);
+  }
+};
+
+window.doLogout = async () => {
+  if(confirm('تسجيل الخروج؟')){ await signOut(auth); }
+};
+
+window.approveUser = async (id, name) => {
+  await updateDoc(doc(db,'users',id), { status:'approved' });
+  toast('تم قبول '+name+' ✅');
+};
+
+window.rejectUser = async (id, name) => {
+  if(!confirm('رفض وحذف طلب "'+name+'"؟')) return;
+  await deleteDoc(doc(db,'users',id));
+  toast('تم رفض الطلب 🗑️','🗑️');
+};
+
+window.revokeUser = async (id, name) => {
+  if(!confirm('إلغاء صلاحية "'+name+'"؟')) return;
+  await updateDoc(doc(db,'users',id), { status:'revoked' });
+  toast('تم إلغاء صلاحية '+name+' 🚫','🚫');
+};
+
+window.addUserManually = async () => {
+  const name  = document.getElementById('nu-name').value.trim();
+  const email = document.getElementById('nu-email').value.trim();
+  const pass  = document.getElementById('nu-pass').value;
+  const role  = document.getElementById('nu-role').value;
+  if(!name||!email||!pass){ toast('أكمل جميع الحقول ⚠️','⚠️'); return; }
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await setDoc(doc(db,'users',cred.user.uid), {
+      name, email, role, status:'approved', createdAt: serverTimestamp()
+    });
+    closeModal('addUserModal');
+    toast('تم إضافة '+name+' ✅');
+    ['nu-name','nu-email','nu-pass'].forEach(id=>document.getElementById(id).value='');
+  } catch(e) {
+    toast('❌ '+e.message,'❌');
+  }
+};
+
+function showError(id, msg){ document.getElementById(id).textContent=msg; setTimeout(()=>document.getElementById(id).textContent='',4000); }
+window.showRegister = ()=>{ document.getElementById('authForm').style.display='none'; document.getElementById('registerForm').style.display='block'; };
+window.showLogin   = ()=>{ document.getElementById('authForm').style.display='block'; document.getElementById('registerForm').style.display='none'; document.getElementById('pendingMsg').style.display='none'; };
 
 // ── RENDER LEADS ──
 function renderAll() {
-  renderDash();
-  renderPipeline();
-  renderClients(currentFilter);
-  updateStats();
-  updateReports();
+  renderDash(); renderPipeline(); renderClients(currentFilter); updateStats(); updateReports();
 }
 
 function stageColor(s){
@@ -486,7 +785,8 @@ function stageColor(s){
 function makeLeadRow(lead, showActions=true) {
   const av = (lead.name||'؟').substring(0,2);
   const budget = lead.budget ? Number(lead.budget).toLocaleString()+' د.إ' : '—';
-  const actions = showActions ? `
+  const canEdit = !currentUserData || currentUserData.role !== 'viewer';
+  const actions = showActions && canEdit ? `
     <div class="lead-actions">
       <button class="act-btn" onclick="openMoveStage('${lead.id}','${lead.name}','${lead.stage||'جديد'}')">🔄 تغيير المرحلة</button>
       <button class="act-btn del" onclick="deleteLead('${lead.id}','${lead.name}')">🗑️ حذف</button>
@@ -508,12 +808,13 @@ function makeLeadRow(lead, showActions=true) {
 function renderDash() {
   const el = document.getElementById('dashLeads');
   const recent = allLeads.slice(0,5);
-  el.innerHTML = recent.length ? recent.map(l=>makeLeadRow(l,false)).join('') :
-    '<div class="empty"><div class="ico">👥</div>لا يوجد عملاء بعد</div>';
+  el.innerHTML = recent.length ? recent.map(l=>makeLeadRow(l,false)).join('')
+    : '<div class="empty"><div class="ico">👥</div>لا يوجد عملاء بعد</div>';
 }
 
 function renderPipeline() {
   const stages = ['جديد','تواصل','اهتمام','عرض','مغلق'];
+  const canEdit = !currentUserData || currentUserData.role !== 'viewer';
   stages.forEach((s,i) => {
     const filtered = allLeads.filter(l=>(l.stage||'جديد')===s);
     document.getElementById('pc'+i).textContent = filtered.length;
@@ -523,10 +824,10 @@ function renderPipeline() {
         <div class="p-name">${l.name||'—'}</div>
         <div class="p-type">${l.propType||''} • ${l.city||''}</div>
         <div class="p-price">${l.budget?Number(l.budget).toLocaleString()+' د.إ':'—'}</div>
-        <div class="pipe-card-actions">
+        ${canEdit?`<div class="pipe-card-actions">
           <button class="pipe-btn" onclick="openMoveStage('${l.id}','${l.name}','${s}')">🔄 نقل</button>
           <button class="pipe-btn del-btn" onclick="deleteLead('${l.id}','${l.name}')">🗑️</button>
-        </div>
+        </div>`:''}
       </div>`).join('')
     : '<div style="font-size:11px;color:var(--muted);text-align:center;padding:12px">فارغ</div>';
   });
@@ -537,8 +838,8 @@ function renderClients(filter) {
   currentFilter = filter;
   const filtered = filter==='all' ? allLeads : allLeads.filter(l=>(l.stage||'جديد')===filter);
   const el = document.getElementById('clientsList');
-  el.innerHTML = filtered.length ? filtered.map(l=>makeLeadRow(l,true)).join('') :
-    '<div class="empty"><div class="ico">👥</div>لا يوجد عملاء</div>';
+  el.innerHTML = filtered.length ? filtered.map(l=>makeLeadRow(l,true)).join('')
+    : '<div class="empty"><div class="ico">👥</div>لا يوجد عملاء</div>';
 }
 
 function renderAppts() {
@@ -566,10 +867,7 @@ function renderProps() {
         <div class="prop-name">${p.name||'—'}</div>
         <div class="prop-loc">📍 ${p.location||'دبي'}</div>
         <div class="prop-price">${p.price?Number(p.price).toLocaleString()+' د.إ':'—'}</div>
-        <div class="prop-details">
-          ${p.area?`<span class="prop-det">📐 ${p.area}م²</span>`:''}
-          <span class="prop-det badge ${statusColor[p.status]||'b-green'}" style="margin-top:0">${p.status||'متاح'}</span>
-        </div>
+        <div class="prop-details">${p.area?`<span class="prop-det">📐 ${p.area}م²</span>`:''}<span class="prop-det badge ${statusColor[p.status]||'b-green'}" style="margin-top:0">${p.status||'متاح'}</span></div>
       </div>
       <button class="act-btn del" onclick="deleteProp('${p.id}')">🗑️</button>
     </div>`).join('')
@@ -584,156 +882,114 @@ function updateStats() {
   document.getElementById('statClosed').textContent = closed;
   document.getElementById('statActive').textContent = active;
   document.getElementById('statBudget').textContent = totalB>1000000?(totalB/1000000).toFixed(1)+'M':totalB>1000?(totalB/1000).toFixed(0)+'K':totalB;
-
-  const stages = ['جديد','تواصل','اهتمام','عرض','مغلق'];
-  const max = Math.max(...stages.map(s=>allLeads.filter(l=>(l.stage||'جديد')===s).length),1);
+  const stages=['جديد','تواصل','اهتمام','عرض','مغلق'];
+  const max=Math.max(...stages.map(s=>allLeads.filter(l=>(l.stage||'جديد')===s).length),1);
   stages.forEach((s,i)=>{
-    const count = allLeads.filter(l=>(l.stage||'جديد')===s).length;
-    const pct = Math.round(count/max*100);
-    document.getElementById('f'+i).style.width = pct+'%';
-    document.getElementById('f'+i).textContent = count;
-    document.getElementById('fn'+i).textContent = count;
+    const count=allLeads.filter(l=>(l.stage||'جديد')===s).length;
+    const pct=Math.round(count/max*100);
+    document.getElementById('f'+i).style.width=pct+'%';
+    document.getElementById('f'+i).textContent=count;
+    document.getElementById('fn'+i).textContent=count;
   });
 }
 
 function updateReports() {
-  const closed = allLeads.filter(l=>l.stage==='مغلق').length;
-  const rate = allLeads.length ? Math.round(closed/allLeads.length*100) : 0;
-  document.getElementById('r-total').textContent = allLeads.length;
-  document.getElementById('r-closed').textContent = closed;
-  document.getElementById('r-rate').textContent = rate+'%';
-  document.getElementById('r-appts').textContent = allAppts.length;
-
-  const stages = ['جديد','تواصل','اهتمام','عرض','مغلق'];
-  const max = Math.max(...stages.map(s=>allLeads.filter(l=>(l.stage||'جديد')===s).length),1);
+  const closed=allLeads.filter(l=>l.stage==='مغلق').length;
+  const rate=allLeads.length?Math.round(closed/allLeads.length*100):0;
+  document.getElementById('r-total').textContent=allLeads.length;
+  document.getElementById('r-closed').textContent=closed;
+  document.getElementById('r-rate').textContent=rate+'%';
+  document.getElementById('r-appts').textContent=allAppts.length;
+  const stages=['جديد','تواصل','اهتمام','عرض','مغلق'];
+  const max=Math.max(...stages.map(s=>allLeads.filter(l=>(l.stage||'جديد')===s).length),1);
   stages.forEach((s,i)=>{
-    const count = allLeads.filter(l=>(l.stage||'جديد')===s).length;
-    const pct = Math.round(count/max*100);
-    document.getElementById('rf'+i).style.width = pct+'%';
-    document.getElementById('rf'+i).textContent = count;
-    document.getElementById('rfn'+i).textContent = count;
+    const count=allLeads.filter(l=>(l.stage||'جديد')===s).length;
+    document.getElementById('rf'+i).style.width=Math.round(count/max*100)+'%';
+    document.getElementById('rf'+i).textContent=count;
+    document.getElementById('rfn'+i).textContent=count;
   });
 }
 
-// ── SAVE FUNCTIONS ──
+// ── SAVE ──
 window.saveLead = async () => {
-  const name = document.getElementById('l-name').value.trim();
-  const phone = document.getElementById('l-phone').value.trim();
+  const name=document.getElementById('l-name').value.trim();
+  const phone=document.getElementById('l-phone').value.trim();
   if(!name){ toast('أدخل اسم العميل ⚠️','⚠️'); return; }
   if(!phone){ toast('أدخل رقم الجوال ⚠️','⚠️'); return; }
-  const data = {
-    name, phone,
-    city: document.getElementById('l-city').value,
-    propType: document.getElementById('l-type').value,
-    budget: document.getElementById('l-budget').value,
-    source: document.getElementById('l-source').value,
-    stage: document.getElementById('l-stage').value,
-    notes: document.getElementById('l-notes').value,
-    createdAt: window._fbReady ? serverTimestamp() : new Date().toISOString()
-  };
-  if(window._fbReady) {
-    await addDoc(leadsCol, data);
-  } else {
-    data.id = 'local_'+Date.now();
-    allLeads.unshift(data);
-    renderAll();
-  }
+  const data={name,phone,city:document.getElementById('l-city').value,propType:document.getElementById('l-type').value,budget:document.getElementById('l-budget').value,source:document.getElementById('l-source').value,stage:document.getElementById('l-stage').value,notes:document.getElementById('l-notes').value,createdAt:window._fbReady?serverTimestamp():new Date().toISOString()};
+  if(window._fbReady) await addDoc(leadsCol,data);
+  else { data.id='local_'+Date.now(); allLeads.unshift(data); renderAll(); }
   closeModal('addLeadModal');
-  toast('تم إضافة العميل! 🎉');
+  toast('✅ تم حفظ العميل بنجاح!');
   ['l-name','l-phone','l-budget','l-notes'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('l-stage').value='جديد';
-  document.querySelectorAll('.stage-opt').forEach((o,i)=>o.classList.toggle('selected',i===0));
+  document.querySelectorAll('#addLeadModal .stage-opt').forEach((o,i)=>o.classList.toggle('selected',i===0));
 };
 
 window.saveAppt = async () => {
-  const client = document.getElementById('a-client').value.trim();
+  const client=document.getElementById('a-client').value.trim();
   if(!client){ toast('أدخل اسم العميل ⚠️','⚠️'); return; }
-  const data = {
-    client,
-    type: document.getElementById('a-type').value,
-    date: document.getElementById('a-date').value,
-    time: document.getElementById('a-time').value,
-    duration: document.getElementById('a-dur').value,
-    notes: document.getElementById('a-notes').value,
-    createdAt: window._fbReady ? serverTimestamp() : new Date().toISOString()
-  };
-  if(window._fbReady) await addDoc(apptsCol, data);
+  const data={client,type:document.getElementById('a-type').value,date:document.getElementById('a-date').value,time:document.getElementById('a-time').value,duration:document.getElementById('a-dur').value,notes:document.getElementById('a-notes').value,createdAt:window._fbReady?serverTimestamp():new Date().toISOString()};
+  if(window._fbReady) await addDoc(apptsCol,data);
   else { data.id='local_'+Date.now(); allAppts.unshift(data); renderAppts(); }
   closeModal('addApptModal');
-  toast('تم حفظ الموعد! 📅');
+  toast('✅ تم حفظ الموعد بنجاح!');
   ['a-client','a-date','a-time','a-notes'].forEach(id=>document.getElementById(id).value='');
 };
 
 window.saveProp = async () => {
-  const name = document.getElementById('p-name').value.trim();
+  const name=document.getElementById('p-name').value.trim();
   if(!name){ toast('أدخل اسم العقار ⚠️','⚠️'); return; }
-  const data = {
-    name,
-    type: document.getElementById('p-type').value,
-    status: document.getElementById('p-status').value,
-    price: document.getElementById('p-price').value,
-    area: document.getElementById('p-area').value,
-    location: document.getElementById('p-loc').value,
-    createdAt: window._fbReady ? serverTimestamp() : new Date().toISOString()
-  };
-  if(window._fbReady) await addDoc(propsCol, data);
+  const data={name,type:document.getElementById('p-type').value,status:document.getElementById('p-status').value,price:document.getElementById('p-price').value,area:document.getElementById('p-area').value,location:document.getElementById('p-loc').value,createdAt:window._fbReady?serverTimestamp():new Date().toISOString()};
+  if(window._fbReady) await addDoc(propsCol,data);
   else { data.id='local_'+Date.now(); allProps.unshift(data); renderProps(); }
   closeModal('addPropModal');
-  toast('تم إضافة العقار! 🏠');
+  toast('✅ تم حفظ العقار بنجاح!');
   ['p-name','p-price','p-area','p-loc'].forEach(id=>document.getElementById(id).value='');
 };
 
 // ── DELETE ──
-window.deleteLead = async (id, name) => {
+window.deleteLead = async (id,name) => {
   if(!confirm('حذف العميل "'+name+'"؟')) return;
-  if(window._fbReady && !id.startsWith('local_')) await deleteDoc(doc(db,'leads',id));
-  else { allLeads = allLeads.filter(l=>l.id!==id); renderAll(); }
-  toast('تم الحذف 🗑️','🗑️');
+  if(window._fbReady&&!id.startsWith('local_')) await deleteDoc(doc(db,'leads',id));
+  else { allLeads=allLeads.filter(l=>l.id!==id); renderAll(); }
+  toast('🗑️ تم الحذف');
 };
-
 window.deleteAppt = async (id) => {
   if(!confirm('حذف هذا الموعد؟')) return;
-  if(window._fbReady && !id.startsWith('local_')) await deleteDoc(doc(db,'appointments',id));
-  else { allAppts = allAppts.filter(a=>a.id!==id); renderAppts(); }
-  toast('تم حذف الموعد 🗑️','🗑️');
+  if(window._fbReady&&!id.startsWith('local_')) await deleteDoc(doc(db,'appointments',id));
+  else { allAppts=allAppts.filter(a=>a.id!==id); renderAppts(); }
+  toast('🗑️ تم حذف الموعد');
 };
-
 window.deleteProp = async (id) => {
   if(!confirm('حذف هذا العقار؟')) return;
-  if(window._fbReady && !id.startsWith('local_')) await deleteDoc(doc(db,'properties',id));
-  else { allProps = allProps.filter(p=>p.id!==id); renderProps(); }
-  toast('تم حذف العقار 🗑️','🗑️');
+  if(window._fbReady&&!id.startsWith('local_')) await deleteDoc(doc(db,'properties',id));
+  else { allProps=allProps.filter(p=>p.id!==id); renderProps(); }
+  toast('🗑️ تم حذف العقار');
 };
 
 // ── MOVE STAGE ──
-window.openMoveStage = (id, name, currentStage) => {
-  moveTargetId = id;
-  document.getElementById('moveLeadName').textContent = name;
-  document.getElementById('moveLeadCurrent').textContent = 'المرحلة الحالية: '+currentStage;
+window.openMoveStage = (id,name,currentStage) => {
+  moveTargetId=id;
+  document.getElementById('moveLeadName').textContent=name;
+  document.getElementById('moveLeadCurrent').textContent='المرحلة الحالية: '+currentStage;
   openModal('moveStageModal');
 };
-
 window.confirmMove = async (newStage) => {
   if(!moveTargetId) return;
-  if(window._fbReady && !moveTargetId.startsWith('local_')) {
-    await updateDoc(doc(db,'leads',moveTargetId), { stage: newStage });
-  } else {
-    const lead = allLeads.find(l=>l.id===moveTargetId);
-    if(lead) { lead.stage=newStage; renderAll(); }
-  }
+  if(window._fbReady&&!moveTargetId.startsWith('local_')) await updateDoc(doc(db,'leads',moveTargetId),{stage:newStage});
+  else { const l=allLeads.find(l=>l.id===moveTargetId); if(l){l.stage=newStage;renderAll();} }
   closeModal('moveStageModal');
-  toast('تم النقل إلى '+newStage+' ✅');
+  toast('✅ تم النقل إلى '+newStage);
   moveTargetId='';
 };
 
-// ── FILTER CLIENTS ──
-window.filterLeads = (filter, el) => {
+window.filterLeads = (filter,el) => {
   document.querySelectorAll('#pg-clients .tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   renderClients(filter);
 };
 
-// ── PWA ──
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 
 </script>
